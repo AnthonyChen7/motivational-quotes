@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import Chat from "./components/chat";
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
@@ -16,12 +17,13 @@ export default function Home() {
       <div>
         If you don't feel like typing, please click on the prompt to auto-generate a quote.
       </div>
-      <input type='text' value={textValue} onChange={(e) => {setTextValue(e.target.value);}} onKeyUp={(e) => {
+      <Chat />
+      {/* <input type='text' value={textValue} onChange={(e) => {setTextValue(e.target.value);}} onKeyUp={(e) => {
         if ( (e.key === 'Enter' || e.keyCode === 13) && textValue.length > 0) {
           console.log({textValue});
           // https://adhithiravi.medium.com/modern-ai-integration-openai-api-in-your-next-js-app-f3a3ce2decf0
         }
-      }} />
+      }} /> */}
     </>
   );
 }
