@@ -41,3 +41,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - be able to save motivational quote
 - add login (3rd party) for it
 - maybe....be able to save all messages to AI on the mood
+- https://railway.com/?referralCode=whitetown ; use railway for deployment?
+
+note to self: if i ever scale up. go with Neon or Supabase for DB
