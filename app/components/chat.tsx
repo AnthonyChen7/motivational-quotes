@@ -35,7 +35,10 @@ export default function Chat() {
                 {message.parts.map((part, i) => {
                     switch (part.type) {
                     case 'text':
-                        return <div key={`${message.id}-${i}`}>{part.text}</div>;
+                        return <>
+                          <div key={`${message.id}-${i}`}>{part.text}</div>
+                          {message.role === 'assistant' && part.text.indexOf('Quote:') > -1 && <button>Save Quote</button>}
+                        </>;
                     case 'tool-moderationCheck':
                       return <div key={`${message.id}-${i}`}>blah</div>;
                     }

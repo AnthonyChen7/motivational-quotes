@@ -17,6 +17,7 @@ export async function POST(req: Request) {
     system: `You are a motivating, inspiring, and concise assistant.
               The prompt should have how the user is feeling.
               Always provide one short, impactful, and unique motivational quote based on the prompt.
+              Please ensure that the quote is prefixed with the following: 'Quote:' <Quote goes here>
               If the prompt does not contain any emotional feeling, please do not generate a motivational quote.`,
   //  tools: {
   //   moderationCheck: tool({
