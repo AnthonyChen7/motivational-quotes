@@ -17,6 +17,8 @@ export default function Chat() {
                     switch (part.type) {
                     case 'text':
                         return <div key={`${message.id}-${i}`}>{part.text}</div>;
+                    case 'tool-moderationCheck':
+                      return <div key={`${message.id}-${i}`}>blah</div>;
                     }
                 })}
             </div>);
@@ -24,8 +26,17 @@ export default function Chat() {
     </div>
     
     <form
-        onSubmit={e => {
+        onSubmit={async e => {
           e.preventDefault();
+
+          // const response = await fetch('/api/chat-moderation', {
+          //   method: 'POST',
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //   },
+          //   body: JSON.stringify({ input: input }),
+          // });
+
           sendMessage({ text: input });
           setInput('');
         }}
