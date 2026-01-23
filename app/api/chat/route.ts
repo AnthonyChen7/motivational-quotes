@@ -18,35 +18,35 @@ export async function POST(req: Request) {
               The prompt should have how the user is feeling.
               Always provide one short, impactful, and unique motivational quote based on the prompt.
               If the prompt does not contain any emotional feeling, please do not generate a motivational quote.`,
-   tools: {
-    moderationCheck: tool({
-        description: 'Checks if the message from the user to the AI bot contain inappropriate words',
-        inputSchema: z.object({
-          content: z.string().describe('The content to send to the AI'),
-        }),
-        execute: async ({ content }) => {
-          console.log('in here', content);
-          const response = await fetch('https://api.openai.com/v1/moderations', {
-            method: 'POST',
+  //  tools: {
+  //   moderationCheck: tool({
+  //       description: 'Checks if the message from the user to the AI bot contain inappropriate words',
+  //       inputSchema: z.object({
+  //         content: z.string().describe('The content to send to the AI'),
+  //       }),
+  //       execute: async ({ content }) => {
+  //         console.log('in here', content);
+  //         const response = await fetch('https://api.openai.com/v1/moderations', {
+  //           method: 'POST',
             
-            headers: {
-              "Content-Type": "application/json",
-              'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-            },
-            body: JSON.stringify({
-              "model": "omni-moderation-latest",
-              "input": "...text to classify goes here..."
-            })
-          });
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+  //           },
+  //           body: JSON.stringify({
+  //             "model": "omni-moderation-latest",
+  //             "input": "...text to classify goes here..."
+  //           })
+  //         });
 
-          console.log(await response.json());
-          return {
-            flagged: true,
-            reason: 'Detected harmful content based on internal rules.'
-          };
-        },
-    })
-   },
+  //         console.log(await response.json());
+  //         return {
+  //           flagged: true,
+  //           reason: 'Detected harmful content based on internal rules.'
+  //         };
+  //       },
+  //   })
+  //  },
   //  toolChoice: {"type": "tool", "toolName": 'moderationCheck'}
   });
 
