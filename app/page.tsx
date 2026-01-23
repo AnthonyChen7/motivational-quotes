@@ -8,15 +8,6 @@ export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
   return (
     <>
-      <div>
-        Hi, how are you feeling today?
-      </div>
-      <div>
-        Please type how you're feeling in the input box and I can generate a motivational quote based on your mood.
-      </div>
-      <div>
-        If you don't feel like typing, please click on the prompt to auto-generate a quote.
-      </div>
       <Chat />
     </>
   );
