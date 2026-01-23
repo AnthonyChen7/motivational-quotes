@@ -43,4 +43,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - maybe....be able to save all messages to AI on the mood
 - https://railway.com/?referralCode=whitetown ; use railway for deployment?
 
+https://www.reddit.com/r/nextjs/comments/1ff1mq0/which_free_postgres_database_provider_to_choose/
 note to self: if i ever scale up. go with Neon or Supabase for DB
+
+go with supabase because it provides more things out of the hood:
+https://www.reddit.com/r/PostgreSQL/comments/1autrr5/comment/krcv05b/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button ; i like how it provides file storage and auth (i would need auth to store info on db as a indentifier)
