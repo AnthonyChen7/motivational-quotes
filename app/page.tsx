@@ -1,11 +1,10 @@
 "use client"; // This is a client component 👈🏽
 
 import Image from "next/image";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Chat from "./components/chat";
 import useUser from "./hooks/useUser";
 import createClient from "./lib/supabase/client";
-import { useSearchParams } from "next/navigation";
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
@@ -18,8 +17,8 @@ export default function Home() {
   });
 
   const supabase = createClient();
-  const searchParams = useSearchParams();
-  const next = searchParams.get('next');
+  // const searchParams = useSearchParams();
+  // const next = searchParams.get('next');
 
   const loginWithGoogle = async () => {
     try {
@@ -37,11 +36,13 @@ export default function Home() {
     }
   };
   return (
+
     <>
-    <button onClick={() => loginWithGoogle()}>Log in with Google</button>
-    <button onClick={async() => { await supabase.auth.signOut(); }}>Sign Out</button>
-      <Chat />
+      <button onClick={() => loginWithGoogle()}>Log in with Google</button>
+      <button onClick={async() => { await supabase.auth.signOut(); }}>Sign Out</button>
+        <Chat />
     </>
+    
   );
 }
 
