@@ -38,10 +38,24 @@ export default function useUser() {
         fetchUser();
     }, [supabase]);
 
+    const signOut = async() => {
+        const {error} = await supabase.auth.signOut();
+        if (error) {
+            setError(error);
+        } else {
+            console.log(await supabase.auth.getSession());
+            setSession(null);
+            setUser(null);
+        }
+       
+        
+    };
+
     return {
         loading,
         user,
         session,
-        error
+        error,
+        signOut
     };
 }

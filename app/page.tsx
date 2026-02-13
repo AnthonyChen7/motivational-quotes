@@ -5,10 +5,11 @@ import { Suspense, useState } from "react";
 import Chat from "./components/chat";
 import useUser from "./hooks/useUser";
 import createClient from "./lib/supabase/client";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
-  const {user, error, loading} = useUser();
+  const {user, error, loading, signOut} = useUser();
   
   console.log({
     user,
@@ -39,8 +40,11 @@ export default function Home() {
 
     <>
       <button onClick={() => loginWithGoogle()}>Log in with Google</button>
-      <button onClick={async() => { await supabase.auth.signOut(); }}>Sign Out</button>
-        <Chat />
+      <button onClick={async () => { 
+        await signOut();
+      }}>Sign Out</button>
+      <div>user: {user ? `${user.id}` : 'null'}</div>
+      <Chat />
     </>
     
   );
