@@ -26,7 +26,6 @@ export default function Home() {
 
       const {error} = await supabase.auth.signInWithOAuth({
         provider: 'google',
-
       });
 
       if (error) {
@@ -40,6 +39,7 @@ export default function Home() {
   return (
     <>
     <button onClick={() => loginWithGoogle()}>Log in with Google</button>
+    <button onClick={async() => { await supabase.auth.signOut(); }}>Sign Out</button>
       <Chat />
     </>
   );
