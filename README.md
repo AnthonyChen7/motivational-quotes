@@ -47,4 +47,5 @@ https://www.reddit.com/r/nextjs/comments/1ff1mq0/which_free_postgres_database_pr
 note to self: if i ever scale up. go with Neon or Supabase for DB
 
 go with supabase because it provides more things out of the hood:
-https://www.reddit.com/r/PostgreSQL/comments/1autrr5/comment/krcv05b/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button ; i like how it provides file storage and auth (i would need auth to store info on db as a indentifier)
+https://www.reddit.com/r/PostgreSQL/comments/1autrr5/comment/krcv05b/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button ; i like how it provides file storage and auth (i would need auth to store info on db as a indentifier
+)

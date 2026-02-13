@@ -1,6 +1,7 @@
 'use client';
 
 import { useChat } from "@ai-sdk/react";
+import React from "react";
 import { useState } from "react";
 
 const presetPrompts = [
@@ -30,15 +31,16 @@ export default function Chat() {
     </div>
     <div>
         {messages.map((message) => {
+          console.log({message});
             return (<div key={message.id}>
                 {message.role === 'user' ? 'User: ' : 'AI: '}
                 {message.parts.map((part, i) => {
                     switch (part.type) {
                     case 'text':
-                        return <>
-                          <div key={`${message.id}-${i}`}>{part.text}</div>
+                        return <React.Fragment key={`${message.id}-${i}`}>
+                          <div>{part.text}</div>
                           {message.role === 'assistant' && part.text.indexOf('Quote:') > -1 && <button>Save Quote</button>}
-                        </>;
+                        </React.Fragment>;
                     case 'tool-moderationCheck':
                       return <div key={`${message.id}-${i}`}>blah</div>;
                     }
