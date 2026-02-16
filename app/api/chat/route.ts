@@ -31,7 +31,7 @@ import { NextResponse } from 'next/server';
 //   return result.toUIMessageStreamResponse();
 
 // }
-console.log('generating open ai key...');
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // Uses the key from .env.local
 });

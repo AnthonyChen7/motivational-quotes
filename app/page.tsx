@@ -11,12 +11,7 @@ import { createQuote } from "./lib/supabase/actions";
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
   const {user, error, loading, signOut} = useUser();
-  
-  console.log({
-    user,
-    error,
-    loading
-  });
+
 
   const supabase = createClient();
   // const searchParams = useSearchParams();

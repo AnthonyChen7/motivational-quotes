@@ -9,7 +9,6 @@ export async function POST(request: Request) {
   const { input } = await request.json();
 
   try {
-    console.log('in here');
     let moderationResponse;
         moderationResponse = await openai.moderations.create({
             model: "omni-moderation-2024-09-26",
@@ -19,7 +18,6 @@ export async function POST(request: Request) {
 
     // @ts-ignore
     const moderationResult = moderationResponse.results[0];
-    console.log({moderationResult});
     if (moderationResult.flagged) {
       // Content is harmful, return a response indicating this
       return NextResponse.json({

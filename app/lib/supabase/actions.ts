@@ -7,7 +7,7 @@ export async function createQuote({userId, quote}: {userId: string, quote: strin
     const {data, error} = await supabase.from('quote')
     .insert([
         {
-            userId,
+            user_id: userId,
             quote
         }
     ]);

@@ -43,7 +43,6 @@ export default function useUser() {
         if (error) {
             setError(error);
         } else {
-            console.log(await supabase.auth.getSession());
             setSession(null);
             setUser(null);
         }
