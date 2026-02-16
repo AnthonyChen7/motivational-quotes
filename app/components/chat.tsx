@@ -10,7 +10,7 @@ const presetPrompts = [
   "I do not feel like doing anything"
 ];
 
-export default function Chat() {
+export default function Chat({onSaveQuote}: {onSaveQuote: (quote: string) => void}) {
     const [input, setInput] = useState('');
     const { messages, sendMessage } = useChat();
 
@@ -31,7 +31,6 @@ export default function Chat() {
     </div>
     <div>
         {messages.map((message) => {
-          console.log({message});
             return (<div key={message.id}>
                 {message.role === 'user' ? 'User: ' : 'AI: '}
                 {message.parts.map((part, i) => {
@@ -39,7 +38,12 @@ export default function Chat() {
                     case 'text':
                         return <React.Fragment key={`${message.id}-${i}`}>
                           <div>{part.text}</div>
-                          {message.role === 'assistant' && part.text.indexOf('Quote:') > -1 && <button>Save Quote</button>}
+                          {message.role === 'assistant' && part.text.indexOf('Quote:') > -1 && <button onClick={() => {
+                            const parts = part.text.split('Quote:');
+                            // removes extra quotation marks from the string
+                            const quote = parts[1].trim().replace(/["']/g, '');
+                            onSaveQuote?.(quote);
+                          }}>Save Quote</button>}
                         </React.Fragment>;
                     case 'tool-moderationCheck':
                       return <div key={`${message.id}-${i}`}>blah</div>;

@@ -6,6 +6,7 @@ import Chat from "./components/chat";
 import useUser from "./hooks/useUser";
 import createClient from "./lib/supabase/client";
 import { useRouter } from "next/router";
+import { createQuote } from "./lib/supabase/actions";
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
@@ -44,7 +45,13 @@ export default function Home() {
         await signOut();
       }}>Sign Out</button>
       <div>user: {user ? `${user.id}` : 'null'}</div>
-      <Chat />
+      <Chat onSaveQuote={async(quote) => {
+        if (user?.id) {
+          await createQuote({userId: user.id, quote: quote});
+        } else {
+          // TODO throw error
+        }
+      }} />
     </>
     
   );
