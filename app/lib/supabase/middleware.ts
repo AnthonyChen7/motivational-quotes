@@ -6,13 +6,26 @@ import { NextRequest, NextResponse } from "next/server";
  * so it makes it good for authentication
  * @param request 
  */
+function getSupabaseEnv() {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key) {
+        throw new Error(
+            "Missing Supabase env: set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your environment (e.g. Vercel project settings)."
+        );
+    }
+    return { url, key };
+}
+
 export default async function updateSession(request: NextRequest) {
     let supabaseResponse = NextResponse.next({request});
 
+    const { url, key } = getSupabaseEnv();
+
     // initialize supabase server client with custom cookie handling
     const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        url,
+        key,
         {
             cookies: {
                 getAll() {
