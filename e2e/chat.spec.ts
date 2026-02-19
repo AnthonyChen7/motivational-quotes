@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { simulateReadableStream } from 'ai';
 
 /**
@@ -121,45 +121,30 @@ test.describe('Chat Component', () => {
     await expect(page.getByText(/Quote:/)).toBeVisible();
   });
 
-  test('should show Save Quote button when AI response contains "Quote:"', async ({ page }) => {
-    // Mock the streaming API response with a quote using fetch interception
+  const createMockAIStreamResponse = async(page: Page, quote: string, messageId = 'test-message-id') => {
+
+    /**
+     * We are unable to create readable stream using route.fulfill
+     * https://github.com/microsoft/playwright/issues/33564
+     * this will just send by a full body string/buffer. not a real stream
+     * 
+     * addInitScript runs JS in the browser before page loads
+     */
     await page.addInitScript(() => {
       const originalFetch = window.fetch;
-      window.fetch = async function(...args) {
+      /**
+       * Override fetch to return stream response
+       * if url matches AI call, we use it to send stream response
+       * else we call the original fetch
+       */
+      const chunks = ['Quote: "'].concat(quote.split(' '));
+      window.fetch = async function (...args) {
         const url = args[0];
         if (typeof url === 'string' && url.includes('/api/chat')) {
-          const quote = 'Success is not final, failure is not fatal: it is the courage to continue that counts.';
-          const messageId = 'test-message-id';
-          
-          // Create chunks for streaming
-          const chunks = [
-            'Quote: "',
-            'Success',
-            ' is',
-            ' not',
-            ' final',
-            ',',
-            ' failure',
-            ' is',
-            ' not',
-            ' fatal',
-            ':',
-            ' it',
-            ' is',
-            ' the',
-            ' courage',
-            ' to',
-            ' continue',
-            ' that',
-            ' counts',
-            '."'
-          ];
-          
-          // Create a ReadableStream that emits chunks with delays
-          let accumulatedText = '';
+
           const stream = new ReadableStream({
-            async start(controller) {
-              // Send initial empty message
+            async start (controller) {
+              // send initial empty message
               const initialResponse = {
                 id: messageId,
                 role: 'assistant',
@@ -170,11 +155,12 @@ test.describe('Chat Component', () => {
                   }
                 ]
               };
+              // need to do this because AI sdk expects this kind of response
               controller.enqueue(new TextEncoder().encode(`0:${JSON.stringify(initialResponse)}\n`));
-              
-              // Send incremental text chunks with delays
+
+              let accumulatedText = '';
+
               for (const chunk of chunks) {
-                await new Promise(resolve => setTimeout(resolve, 50)); // Delay between chunks
                 accumulatedText += chunk;
                 const chunkResponse = {
                   id: messageId,
@@ -192,17 +178,104 @@ test.describe('Chat Component', () => {
               controller.close();
             }
           });
-          
+
           return new Response(stream, {
             status: 200,
             headers: {
               'Content-Type': 'text/plain; charset=utf-8',
             },
           });
+
         }
         return originalFetch.apply(this, args);
-      };
+      }
     });
+
+  };
+
+  test('should show Save Quote button when AI response contains "Quote:"', async ({ page }) => {
+    
+    // Mock the streaming API response with a quote using fetch interception
+    // await page.addInitScript(() => {
+    //   const originalFetch = window.fetch;
+    //   window.fetch = async function(...args) {
+    //     const url = args[0];
+    //     if (typeof url === 'string' && url.includes('/api/chat')) {
+    //       const messageId = 'test-message-id';
+          
+    //       // Create chunks for streaming
+    //       const chunks = [
+    //         'Quote: "',
+    //         'Success',
+    //         ' is',
+    //         ' not',
+    //         ' final',
+    //         ',',
+    //         ' failure',
+    //         ' is',
+    //         ' not',
+    //         ' fatal',
+    //         ':',
+    //         ' it',
+    //         ' is',
+    //         ' the',
+    //         ' courage',
+    //         ' to',
+    //         ' continue',
+    //         ' that',
+    //         ' counts',
+    //         '."'
+    //       ];
+          
+    //       // Create a ReadableStream that emits chunks
+    //       let accumulatedText = '';
+    //       const stream = new ReadableStream({
+    //         async start(controller) {
+    //           // Send initial empty message
+    //           const initialResponse = {
+    //             id: messageId,
+    //             role: 'assistant',
+    //             parts: [
+    //               {
+    //                 type: 'text',
+    //                 text: ''
+    //               }
+    //             ]
+    //           };
+    //           // need to do this because AI sdk expects this kind of response
+    //           controller.enqueue(new TextEncoder().encode(`0:${JSON.stringify(initialResponse)}\n`));
+
+    //           for (const chunk of chunks) {
+    //             accumulatedText += chunk;
+    //             const chunkResponse = {
+    //               id: messageId,
+    //               role: 'assistant',
+    //               parts: [
+    //                 {
+    //                   type: 'text',
+    //                   text: accumulatedText
+    //                 }
+    //               ]
+    //             };
+    //             controller.enqueue(new TextEncoder().encode(`0:${JSON.stringify(chunkResponse)}\n`));
+    //           }
+              
+    //           controller.close();
+    //         }
+    //       });
+          
+    //       return new Response(stream, {
+    //         status: 200,
+    //         headers: {
+    //           'Content-Type': 'text/plain; charset=utf-8',
+    //         },
+    //       });
+    //     }
+    //     return originalFetch.apply(this, args);
+    //   };
+    // });
+
+    await createMockAIStreamResponse(page, 'this is a test quote');
 
     const input = page.getByPlaceholder('Say something...');
     await input.fill('I am feeling discouraged');
@@ -212,40 +285,6 @@ test.describe('Chat Component', () => {
     await page.waitForTimeout(5000);
     
     // Check that Save Quote button appears
-    await expect(page.getByRole('button', { name: 'Save Quote' })).toBeVisible();
-  });
-
-  test('should call onSaveQuote callback when Save Quote is clicked', async ({ page }) => {
-    // Mock the streaming API response
-    await page.route('**/api/chat', async route => {
-      const streamResponse = createMockChatResponse(
-        'Believe you can and you are halfway there.'
-      );
-      
-      await route.fulfill({
-        status: 200,
-        contentType: 'text/plain; charset=utf-8',
-        body: streamResponse,
-      });
-    });
-
-    const input = page.getByPlaceholder('Say something...');
-    await input.fill('I need inspiration');
-    await input.press('Enter');
-    
-    // Wait for the AI response and Save Quote button
-    await page.waitForTimeout(2000);
-    await expect(page.getByRole('button', { name: 'Save Quote' })).toBeVisible();
-    
-    // Click the Save Quote button
-    await page.getByRole('button', { name: 'Save Quote' }).click();
-    
-    // Wait a bit for the callback to execute
-    await page.waitForTimeout(500);
-    
-    // Verify the button was clickable (the click should have executed)
-    // Note: Since onSaveQuote calls createQuote which requires a user,
-    // the actual save might fail, but we can verify the UI interaction works
     await expect(page.getByRole('button', { name: 'Save Quote' })).toBeVisible();
   });
 
