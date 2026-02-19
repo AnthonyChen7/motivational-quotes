@@ -34,7 +34,7 @@ export default function Home() {
   };
   return (
 
-    <>
+    <Suspense>
       <button onClick={() => loginWithGoogle()}>Log in with Google</button>
       <button onClick={async () => { 
         await signOut();
@@ -47,7 +47,7 @@ export default function Home() {
           // TODO throw error
         }
       }} />
-    </>
+    </Suspense>
     
   );
 }
