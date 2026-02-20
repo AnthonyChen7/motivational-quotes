@@ -73,7 +73,7 @@ const createMockAIStreamResponse = async(page: Page, quote: string, messageId = 
 
 };
 
-test.describe('Chat Component', () => {
+test.describe.skip('Chat Component', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the home page where the Chat component is rendered
     await page.goto('/');

@@ -22,3 +22,9 @@ jobs:
 
       - name: Lint code
         run: npm run lint
+
+      - name: Install Playwright browser
+        run:  npx playwright install --with-deps
+      
+      - name: Run Playwright tests
+        run: npm run test:e2e
