@@ -19,10 +19,10 @@ export default function Chat({onSaveQuote}: {onSaveQuote: (quote: string) => voi
       Hi, how are you feeling today?
     </div>
     <div>
-      Please type how you're feeling in the input box and I can generate a motivational quote based on your mood.
+      Please type how you&quot;re feeling in the input box and I can generate a motivational quote based on your mood.
     </div>
     <div>
-      If you don't feel like typing, please click on the prompt to auto-generate a quote.
+      If you don&quot;t feel like typing, please click on the prompt to auto-generate a quote.
     </div>
     <div style={{display: 'flex', flexDirection: 'column'}}>
       {
