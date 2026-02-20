@@ -52,3 +52,9 @@ https://www.reddit.com/r/PostgreSQL/comments/1autrr5/comment/krcv05b/?utm_source
 
 
 https://engineering.teknasyon.com/next-js-with-supabase-google-login-step-by-step-guide-088ef06e0501
+
+
+
+
+https://www.reddit.com/r/devops/comments/105a2bn/comment/j3c5pej/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+- will go with Github actions because my code is hosted on Github and seeing how the knowledge and skill is transferrable between Gitlab and GitHub
