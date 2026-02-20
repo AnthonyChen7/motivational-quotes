@@ -8,8 +8,8 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY}}
-      NEXT_PUBLIC_SUPABASE_URL: ${{secrets.NEXT_PUBLIC_SUPABASE_URL}}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{vars.NEXT_PUBLIC_SUPABASE_ANON_KEY}}
+      NEXT_PUBLIC_SUPABASE_URL: ${{vars.NEXT_PUBLIC_SUPABASE_URL}}
 
     steps:
       - name: Checkout code
