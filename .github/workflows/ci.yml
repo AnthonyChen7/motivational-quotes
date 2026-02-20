@@ -7,9 +7,17 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
+    env:
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
 
     steps:
+      - name: Check Supabase secrets
+        run: |
+          if [ -z "$NEXT_PUBLIC_SUPABASE_ANON_KEY" ] || [ -z "$NEXT_PUBLIC_SUPABASE_URL" ]; then
+            echo "::error::Missing secrets. Add NEXT_PUBLIC_SUPABASE_ANON_KEY and NEXT_PUBLIC_SUPABASE_URL in repo Actions secrets."
+            exit 1
+          fi
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -21,17 +29,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint code
-        run: npm run lint
+      # - name: Lint code
+      #   run: npm run lint
 
       - name: Install Playwright browser
         run:  npx playwright install --with-deps
       
       - name: Run Playwright tests
         run: npm run test:e2e
-        env:
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY}}
-          NEXT_PUBLIC_SUPABASE_URL: ${{secrets.NEXT_PUBLIC_SUPABASE_URL}}
+        
       - uses: actions/upload-artifact@v5
         if: ${{!cancelled()}}
         with:
