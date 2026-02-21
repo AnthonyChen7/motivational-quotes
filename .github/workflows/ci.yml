@@ -12,6 +12,8 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
 
     steps:
+      # TODO these should be environemnt secrets not repo secrets
+      # https://medium.com/@morepravin1989/github-actions-secrets-and-variables-understanding-repository-and-environment-secrets-for-2b2eed404222
       - name: Check Supabase secrets
         run: |
           if [ -z "$NEXT_PUBLIC_SUPABASE_ANON_KEY" ] || [ -z "$NEXT_PUBLIC_SUPABASE_URL" ]; then
