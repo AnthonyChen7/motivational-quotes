@@ -11,6 +11,16 @@ const openai = new OpenAI({
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
+  const lastMessage = messages[messages.length - 1];
+  if (lastMessage && lastMessage.role === 'user') {
+    // TODO add moderation check. but it requires $5
+    // const moderation = await openai.moderations.create({
+    //   // @ts-ignore
+    //   input: lastMessage.parts[0].text
+    // });
+    // console.log(moderation);
+  }
+
   const result = streamText({
     model: "openai/gpt-5.2-chat",
     messages: await convertToModelMessages(messages),
