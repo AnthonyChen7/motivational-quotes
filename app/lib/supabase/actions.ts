@@ -1,7 +1,7 @@
 'use server';
 
 import createClient from "./server";
-
+// Note DB will handle uniqueness in schema
 export async function createQuote({userId, quote}: {userId: string, quote: string}) {
     const supabase = await createClient();
     const {data, error} = await supabase.from('quote')

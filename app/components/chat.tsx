@@ -57,14 +57,6 @@ export default function Chat({onSaveQuote}: {onSaveQuote: (quote: string) => voi
         onSubmit={async e => {
           e.preventDefault();
 
-          // const response = await fetch('/api/chat-moderation', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json',
-          //   },
-          //   body: JSON.stringify({ input: input }),
-          // });
-
           sendMessage({ text: input });
           setInput('');
         }}
