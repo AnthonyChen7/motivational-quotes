@@ -1,20 +1,27 @@
 "use client"; // This is a client component 👈🏽
 
 import Image from "next/image";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Chat from "./components/chat";
 import useUser from "./hooks/useUser";
 import createClient from "./lib/supabase/client";
 import { createQuote } from "./lib/supabase/actions";
+import { useQuote } from "./hooks/useQuote";
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
   const {user, error, loading, signOut} = useUser();
 
+  const { generateRandomQuote } = useQuote();
+
 
   const supabase = createClient();
   // const searchParams = useSearchParams();
   // const next = searchParams.get('next');
+
+  useEffect(() => {
+    generateRandomQuote();
+  }, []);
 
   const loginWithGoogle = async () => {
     try {
