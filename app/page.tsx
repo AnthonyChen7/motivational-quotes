@@ -35,9 +35,9 @@ export default function Home() {
     }
   };
 
-  const onSaveQuote = async (userId: string ,quote: string) => {
-    if (user?.id) {
-      await createQuote({userId: user.id, quote: quote});
+  const onSaveQuote = async (userId: string | null | undefined ,quote: string) => {
+    if (userId) {
+      await createQuote({userId: userId, quote: quote});
     } else {
       // TODO throw error
     }
@@ -51,10 +51,10 @@ export default function Home() {
       }}>Sign Out</button>
       <div>user: {user ? `${user.id}` : 'null'}</div>
       <RandomQuote onSave={async(quote) => {
-        await onSaveQuote(user?.id!, quote);
+        await onSaveQuote(user?.id, quote);
       }} />
       <Chat onSaveQuote={async(quote) => {
-        await onSaveQuote(user?.id!, quote);
+        await onSaveQuote(user?.id, quote);
       }} />
     </Suspense>
     
