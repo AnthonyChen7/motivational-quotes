@@ -4,11 +4,10 @@ export const useQuote = () => {
             const response = await fetch('/api/quote');
             const json = await response.json();
             const quote = json?.quote;
-            console.log({quote});
+            return quote;
         } catch (e) {
-            console.error(e);
+            throw e;
         }
-
     };
 
     return {
