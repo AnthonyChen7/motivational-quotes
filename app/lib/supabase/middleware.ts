@@ -1,4 +1,4 @@
-import { LOGIN_PATH } from "@/app/constants/common";
+import { DEFAULT_PATH, PRIVATE_ROUTES } from "@/app/constants/common";
 import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 /**
@@ -55,19 +55,18 @@ export default async function updateSession(request: NextRequest) {
     const path = request.nextUrl.pathname;
 
     // redirect unauthenticated users to login, except for auth routes
-    if (!user && !path.startsWith(LOGIN_PATH) && !path.startsWith('/auth')) {
+    if (PRIVATE_ROUTES.some(privateRoute => path.toLowerCase() === privateRoute.toLowerCase()) && !user) {
         const url = request.nextUrl.clone();
-        url.pathname = LOGIN_PATH;
-        url.searchParams.set('next', path);
+        url.pathname = DEFAULT_PATH;
         return NextResponse.redirect(url);
     }
 
     // prevent authenticated users from accessing login pate
-    if (user && path.startsWith(LOGIN_PATH)) {
-        const url = request.nextUrl.clone();
-        url.pathname = '/';
-        return NextResponse.redirect(url);
-    }
+    // if (user && path.startsWith(DEFAULT_PATH)) {
+    //     const url = request.nextUrl.clone();
+    //     url.pathname = '/';
+    //     return NextResponse.redirect(url);
+    // }
 
     return supabaseResponse;
 }
