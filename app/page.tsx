@@ -8,7 +8,7 @@ import createClient from "./lib/supabase/client";
 import { createQuote } from "./lib/supabase/actions";
 import { useQuote } from "./hooks/useQuote";
 import { RandomQuote } from "./components/random-quote";
-import { Theme } from "@radix-ui/themes";
+import { Button, Theme } from "@radix-ui/themes";
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
@@ -48,10 +48,11 @@ export default function Home() {
     <Suspense>
       <Theme>
 
-        <button onClick={() => loginWithGoogle()}>Log in with Google</button>
-        <button onClick={async () => { 
+        <Button onClick={() => loginWithGoogle()}>Log in with Google</Button>
+        <Button onClick={async () => { 
           await signOut();
-        }}>Sign Out</button>
+        }}>Sign Out</Button>
+        <Button>See Saved Quotes</Button>
         <div>user: {user ? `${user.id}` : 'null'}</div>
         <RandomQuote onSave={async(quote) => {
           await onSaveQuote(user?.id, quote);
