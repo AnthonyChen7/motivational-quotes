@@ -9,14 +9,14 @@ import { createQuote } from "./lib/supabase/actions";
 import { useQuote } from "./hooks/useQuote";
 import { RandomQuote } from "./components/random-quote";
 import { Button, Theme } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [textValue, setTextValue] = useState<string>('');
   const {user, error, loading, signOut} = useUser();
 
+  const router = useRouter()
   
-
-
   const supabase = createClient();
 
 
@@ -52,7 +52,9 @@ export default function Home() {
         <Button onClick={async () => { 
           await signOut();
         }}>Sign Out</Button>
-        <Button>See Saved Quotes</Button>
+        <Button onClick={() => {
+          router.push('/quotes');
+        }}>See Saved Quotes</Button>
         <div>user: {user ? `${user.id}` : 'null'}</div>
         <RandomQuote onSave={async(quote) => {
           await onSaveQuote(user?.id, quote);
