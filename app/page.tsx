@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <Suspense>
       <Theme>
-
+        hello world
         <Button onClick={() => loginWithGoogle()}>Log in with Google</Button>
         <Button onClick={async () => { 
           await signOut();
