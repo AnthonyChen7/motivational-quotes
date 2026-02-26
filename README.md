@@ -60,3 +60,6 @@ https://www.reddit.com/r/devops/comments/105a2bn/comment/j3c5pej/?utm_source=sha
 - will go with Github actions because my code is hosted on Github and seeing how the knowledge and skill is transferrable between Gitlab and GitHub
 
 https://www.linkedin.com/pulse/ultimate-cicd-setup-nextjs-github-actions-vercel-ananthu-krishnan-lrpvc/
+
+https://medium.com/@hannah96ger/tailwind-vs-radix-f92fd5e8f3c8
+I choose to use Radix UI because it comes with components with extra flexibility to style as needed with TailWind and Tailwind at this time was considered a good css framework. and i want to choose something new outside of the box for learning experience
