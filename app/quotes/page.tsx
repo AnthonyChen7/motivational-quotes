@@ -11,7 +11,7 @@ import { QuoteData, QuoteTable } from "../components/quote-table";
 export default function Page () {
     const [tableData, setTableData] = useState<QuoteData[]>([]);
     // TODO be able to store the user's state
-    const {user, loginWithGoogle, signOut} = useUser();
+    const {user, signOut} = useUser();
     useEffect(() => {
         if (user) {
             getQuotes({
@@ -30,12 +30,9 @@ export default function Page () {
             });
         }
     }, [user]);
-
     return <>
-        <Button onClick={() => loginWithGoogle({redirectUrl: 'http://localhost:3000/quotes'})}>Log in with Google</Button>
-        <Button onClick={async () => { 
-          await signOut();
-        }}>Sign Out</Button>
+        <Button onClick={() => signOut()}>Sign Out</Button>
+        <div>{user?.id}</div>
         <QuoteTable data={tableData} offset={0} pageSize={3} />
     </>
 }

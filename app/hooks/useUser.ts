@@ -1,4 +1,5 @@
 import { AuthError, Session, User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import createClient from "../lib/supabase/client";
 
@@ -11,6 +12,9 @@ export default function useUser() {
     const [error, setError] = useState<AuthError | null>(null);
 
     const supabase = createClient();
+
+    const router = useRouter();
+
 
     useEffect(() => {
         async function fetchUser () {
@@ -44,7 +48,7 @@ export default function useUser() {
             const {error} = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: redirectUrl
+                    redirectTo: `${window.location.host}/auth/callback?next=${encodeURIComponent(redirectUrl)}`
                 }
             });
 
@@ -64,9 +68,8 @@ export default function useUser() {
         } else {
             setSession(null);
             setUser(null);
+            await router.push('/');
         }
-       
-        
     };
 
     return {

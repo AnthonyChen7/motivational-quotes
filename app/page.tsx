@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <Suspense>
-        <Button onClick={() => loginWithGoogle({redirectUrl: '/'})}>Log in with Google</Button>
+        <Button onClick={() => loginWithGoogle({redirectUrl: `${window.location.host}`})}>Log in with Google</Button>
         <Button onClick={async () => { 
           await signOut();
         }}>Sign Out</Button>
