@@ -1,40 +1,18 @@
 "use client"; // This is a client component 👈🏽
 
-import Image from "next/image";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import Chat from "./components/chat";
 import useUser from "./hooks/useUser";
-import createClient from "./lib/supabase/client";
 import { createQuote } from "./lib/supabase/actions";
-import { useQuote } from "./hooks/useQuote";
 import { RandomQuote } from "./components/random-quote";
-import { Button, Theme } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [textValue, setTextValue] = useState<string>('');
-  const {user, error, loading, signOut} = useUser();
+
+  const {user, error, loading, signOut, loginWithGoogle} = useUser();
 
   const router = useRouter()
-  
-  const supabase = createClient();
-
-
-  const loginWithGoogle = async () => {
-    try {
-
-      const {error} = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-      });
-
-      if (error) {
-        throw error;
-      }
-
-    } catch (e) {
-      console.error('error logging in with google', e);
-    }
-  };
 
   const onSaveQuote = async (userId: string | null | undefined ,quote: string) => {
     if (userId) {
@@ -46,9 +24,7 @@ export default function Home() {
 
   return (
     <Suspense>
-      <Theme>
-        hello world
-        <Button onClick={() => loginWithGoogle()}>Log in with Google</Button>
+        <Button onClick={() => loginWithGoogle({redirectUrl: '/'})}>Log in with Google</Button>
         <Button onClick={async () => { 
           await signOut();
         }}>Sign Out</Button>
@@ -62,9 +38,6 @@ export default function Home() {
         <Chat onSaveQuote={async(quote) => {
           await onSaveQuote(user?.id, quote);
         }} />
-
-      </Theme>
-
     </Suspense>
     
   );

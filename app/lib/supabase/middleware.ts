@@ -57,6 +57,7 @@ export default async function updateSession(request: NextRequest) {
     // redirect unauthenticated users to login, except for auth routes
     if (PRIVATE_ROUTES.some(privateRoute => path.toLowerCase() === privateRoute.toLowerCase()) && !user) {
         const url = request.nextUrl.clone();
+        // TODO make it re-direct to unauthorized page instead
         url.pathname = DEFAULT_PATH;
         return NextResponse.redirect(url);
     }

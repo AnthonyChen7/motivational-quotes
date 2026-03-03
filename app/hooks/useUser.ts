@@ -38,6 +38,25 @@ export default function useUser() {
         fetchUser();
     }, [supabase]);
 
+    const loginWithGoogle = async ({redirectUrl = '/'}: {redirectUrl: string}) => {
+        try {
+
+            const {error} = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: redirectUrl
+                }
+            });
+
+            if (error) {
+                throw error;
+            }
+
+        } catch (e) {
+        console.error('error logging in with google', e);
+        }
+    };
+
     const signOut = async() => {
         const {error} = await supabase.auth.signOut();
         if (error) {
@@ -55,6 +74,7 @@ export default function useUser() {
         user,
         session,
         error,
-        signOut
+        signOut,
+        loginWithGoogle
     };
 }
