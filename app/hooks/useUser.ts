@@ -57,7 +57,7 @@ export default function useUser() {
             }
 
         } catch (e) {
-        console.error('error logging in with google', e);
+            console.error('error logging in with google', e);
         }
     };
 

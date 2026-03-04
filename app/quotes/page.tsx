@@ -10,7 +10,6 @@ import { QuoteData, QuoteTable } from "../components/quote-table";
 
 export default function Page () {
     const [tableData, setTableData] = useState<QuoteData[]>([]);
-    // TODO be able to store the user's state
     const {user, signOut} = useUser();
     useEffect(() => {
         if (user) {
