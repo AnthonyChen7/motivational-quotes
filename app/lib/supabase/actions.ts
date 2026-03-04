@@ -28,11 +28,13 @@ export async function getQuotes({userId, offset = 0, take = 5}: {userId: string,
     )
     // TODO create column to sort
     .order('created_at', {ascending: true})
-    .range(startOffset, endOffset)
+    // inclusive for both start and end. so subtract 1 to make it more accurate
+    .range(startOffset, endOffset - 1)
     .eq('user_id', userId);
     if (error) {
         console.error('error getting quotes', error);
         return {success: false, error: error.message}
     }
-    return {success: true, data, count}
+    const totalPages = Math.floor( (count || 0) / take);
+    return {success: true, data, count , totalPages}
 }

@@ -7,35 +7,50 @@ import { Button } from "@radix-ui/themes";
 import { QuoteData, QuoteTable } from "../components/quote-table";
 import { Paginator } from "../components/paginator";
 
-
+const pageSize = 2;
 
 export default function Page () {
     const [tableData, setTableData] = useState<QuoteData[]>([]);
     const {user, signOut} = useUser();
+    const [offset, setOffset] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
     useEffect(() => {
         if (user) {
             getQuotes({
                 userId: user.id,
-                offset: 0,
-                take: 2
-            }).then(({data, success, error, count}) => {
-                console.log(data);
+                offset: offset,
+                take: pageSize
+            }).then(({data, success, error, count, totalPages}) => {
+                console.log(data, count, totalPages);
                 if (success && data) {
                     setTableData(data);
+                    setTotalPages(totalPages);
                 } else {
                     console.error(error);
                     setTableData([]);
+                    setOffset(0);
+                    setTotalPages(1);
                 }
             }).catch((e) => {
                 console.error(e);
                 setTableData([]);
+                setOffset(0);
+                setTotalPages(1);
             });
         }
-    }, [user]);
+    }, [user, offset]);
     return <>
         <Button onClick={() => signOut()}>Sign Out</Button>
         <div>{user?.id}</div>
-        <QuoteTable data={tableData} offset={0} pageSize={3} />
-        <Paginator />
+        <QuoteTable data={tableData} />
+        <Paginator
+            offset={offset}
+            pageSize={pageSize}
+            totalPages={totalPages}
+            goToFirstPage={() => setOffset(0)}
+            goToLastPage={() => setOffset(totalPages - 1)}
+            next={() => setOffset( (offset + 1) % totalPages )}
+            prev={() => setOffset( offset - 1 < 0 ? totalPages - 1 : offset - 1 )}
+        />
     </>
 }

@@ -7,7 +7,7 @@ export interface QuoteData {
     created_at: string;
 }
 
-export function QuoteTable({data, offset = 0, pageSize = 5}: {data: QuoteData[], offset: number, pageSize: number}) {
+export function QuoteTable({data}: {data: QuoteData[]}) {
 
     return <Box>
         <Table.Root>
