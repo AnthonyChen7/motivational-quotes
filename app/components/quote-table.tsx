@@ -1,6 +1,6 @@
 'use client';
 
-import { Table } from "@radix-ui/themes";
+import { Box, Table } from "@radix-ui/themes";
 
 export interface QuoteData {
     quote: string;
@@ -9,7 +9,7 @@ export interface QuoteData {
 
 export function QuoteTable({data, offset = 0, pageSize = 5}: {data: QuoteData[], offset: number, pageSize: number}) {
 
-    return <div>
+    return <Box>
         <Table.Root>
             <Table.Header>
                 <Table.Row>
@@ -26,7 +26,6 @@ export function QuoteTable({data, offset = 0, pageSize = 5}: {data: QuoteData[],
                     </Table.Row>;
                 })}
             </Table.Body>
-
         </Table.Root>
-    </div>
+    </Box>
 }

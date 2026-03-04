@@ -5,6 +5,7 @@ import useUser from "../hooks/useUser";
 import { getQuotes } from "../lib/supabase/actions";
 import { Button } from "@radix-ui/themes";
 import { QuoteData, QuoteTable } from "../components/quote-table";
+import { Paginator } from "../components/paginator";
 
 
 
@@ -17,10 +18,12 @@ export default function Page () {
                 userId: user.id,
                 offset: 0,
                 take: 2
-            }).then((data) => {
-                if (data.success && data.data) {
-                    setTableData(data.data);
+            }).then(({data, success, error, count}) => {
+                console.log(data);
+                if (success && data) {
+                    setTableData(data);
                 } else {
+                    console.error(error);
                     setTableData([]);
                 }
             }).catch((e) => {
@@ -33,5 +36,6 @@ export default function Page () {
         <Button onClick={() => signOut()}>Sign Out</Button>
         <div>{user?.id}</div>
         <QuoteTable data={tableData} offset={0} pageSize={3} />
+        <Paginator />
     </>
 }

@@ -23,7 +23,7 @@ export async function getQuotes({userId, offset = 0, take = 5}: {userId: string,
     const supabase = await createClient();
     const startOffset = offset * take;
     const endOffset = startOffset + take;
-    const {data, error} = await supabase.from('quote').select(
+    const {data, count, error} = await supabase.from('quote').select(
         'created_at, quote', { count: 'estimated' }
     )
     // TODO create column to sort
@@ -31,8 +31,8 @@ export async function getQuotes({userId, offset = 0, take = 5}: {userId: string,
     .range(startOffset, endOffset)
     .eq('user_id', userId);
     if (error) {
-        console.error('error inserting quote', error);
+        console.error('error getting quotes', error);
         return {success: false, error: error.message}
     }
-    return {success: true, data}
+    return {success: true, data, count}
 }
