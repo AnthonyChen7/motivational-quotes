@@ -8,7 +8,9 @@ import { QuoteData, QuoteTable } from "../components/quote-table";
 import { Paginator } from "../components/paginator";
 
 const pageSize = 2;
-
+/**
+ * TODO set up loading state
+ */
 export default function Page () {
     const [tableData, setTableData] = useState<QuoteData[]>([]);
     const {user, signOut} = useUser();
@@ -45,7 +47,6 @@ export default function Page () {
         <QuoteTable data={tableData} />
         <Paginator
             offset={offset}
-            pageSize={pageSize}
             totalPages={totalPages}
             goToFirstPage={() => setOffset(0)}
             goToLastPage={() => setOffset(totalPages - 1)}
