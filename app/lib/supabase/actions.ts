@@ -38,3 +38,7 @@ export async function getQuotes({userId, offset = 0, take = 5}: {userId: string,
     const totalPages = Math.floor( (count || 0) / take);
     return {success: true, data, count , totalPages}
 }
+
+// export async function deleteQuote({userId, quote}) {
+
+// }
